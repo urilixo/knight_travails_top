@@ -1,7 +1,6 @@
 class Board
   require 'colorize'
   require_relative 'Knight'
-  require 'pry-byebug'
   attr_reader :board
 
   def initialize(rows: 8, columns: 8)
@@ -18,8 +17,14 @@ class Board
   end
 
   def place_piece(piece)
-    x, y = piece.position
+    y, x = piece.position
     @board[x][y] = piece
+  end
+
+  def move_piece(before, after)
+    place_piece(after)
+    y, x = before
+    @board[x][y] = (x + y).even? ? '   '.on_white : '   '.on_black
   end
 
   def background_color(piece)
@@ -40,11 +45,3 @@ class Board
     printed.each { |row| puts row.join }
   end
 end
-
-test = Board.new
-test.place_piece(Knight.new([4, 5]))
-test.print_board
-p test.board
-#binding.pry
-puts 'ok'
-
